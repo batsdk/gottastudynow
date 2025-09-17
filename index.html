@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>25-Day BCS Study Timetable</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(45deg, #FF6B6B, #4ECDC4);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .daily-schedule {
+            background: #f8f9fa;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 15px;
+            border-left: 5px solid #4ECDC4;
+        }
+        
+        .daily-schedule h3 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+        
+        .time-slot {
+            display: flex;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+        
+        .time {
+            font-weight: bold;
+            color: #666;
+            width: 120px;
+            font-size: 0.9em;
+        }
+        
+        .activity {
+            flex: 1;
+            color: #2c3e50;
+        }
+        
+        .week {
+            margin: 0 20px 30px 20px;
+        }
+        
+        .week-header {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .week-header h2 {
+            font-size: 1.8em;
+            margin-bottom: 5px;
+        }
+        
+        .week-header p {
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+        
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        
+        .day-card {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            border-top: 4px solid;
+            transition: transform 0.3s ease;
+        }
+        
+        .day-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .pisp { border-top-color: #FF6B6B; }
+        .se2 { border-top-color: #4ECDC4; }
+        .practice { border-top-color: #45B7D1; }
+        .revision { border-top-color: #96CEB4; }
+        .exam { border-top-color: #FFEAA7; }
+        
+        .day-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .day-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #2c3e50;
+        }
+        
+        .topic-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .topic-list li {
+            padding: 5px 0;
+            color: #555;
+            border-bottom: 1px solid #f1f1f1;
+        }
+        
+        .topic-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .study-method {
+            background: #e8f5e8;
+            border: 1px solid #4ECDC4;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px;
+        }
+        
+        .study-method h3 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .legend {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            margin: 20px;
+            border-radius: 10px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+        }
+        
+        .tips {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px;
+        }
+        
+        .tips h3 {
+            color: #856404;
+            margin-bottom: 15px;
+        }
+        
+        .tips ul {
+            color: #856404;
+            padding-left: 20px;
+        }
+        
+        .tips li {
+            margin-bottom: 8px;
+        }
+        
+        @media print {
+            body { background: white; }
+            .container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>25-Day BCS Study Plan</h1>
+            <p>PISP & SE2 Exam Preparation • Chapter-by-Chapter Method</p>
+        </div>
+        
+        <div class="study-method">
+            <h3>📚 Study Method: Learn → Practice → Master</h3>
+            <p><strong>Daily Structure:</strong> Study chapter content → Do related past paper questions → Review mistakes → Create summary notes</p>
+        </div>
+        
+        <div class="daily-schedule">
+            <h3>⏰ Daily Schedule Template (6 hours total)</h3>
+            <div class="time-slot">
+                <div class="time">9:00-10:30</div>
+                <div class="activity">Chapter Study (1.5 hours)</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">10:30-10:45</div>
+                <div class="activity">Break</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">10:45-12:15</div>
+                <div class="activity">Continue Chapter/Examples (1.5 hours)</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">12:15-13:15</div>
+                <div class="activity">Lunch Break</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">13:15-14:45</div>
+                <div class="activity">Past Paper Questions for Chapter (1.5 hours)</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">14:45-15:00</div>
+                <div class="activity">Break</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">15:00-16:30</div>
+                <div class="activity">Review Mistakes + Additional Practice (1.5 hours)</div>
+            </div>
+            <div class="time-slot">
+                <div class="time">Evening</div>
+                <div class="activity">Light review & summary notes</div>
+            </div>
+        </div>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color pisp"></div>
+                <span>PISP Chapters</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color se2"></div>
+                <span>SE2 Sections</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color practice"></div>
+                <span>Past Papers</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color revision"></div>
+                <span>Revision</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color exam"></div>
+                <span>Exam Prep</span>
+            </div>
+        </div>
+        
+        <!-- Week 1 -->
+        <div class="week">
+            <div class="week-header">
+                <h2>Week 1: PISP Foundation (Days 1-7)</h2>
+                <p>Master all PISP chapters with immediate practice</p>
+            </div>
+            <div class="days-grid">
+                <div class="day-card pisp">
+                    <div class="day-number">Day 1</div>
+                    <div class="day-title">Professional Institutions & Codes</div>
+                    <ul class="topic-list">
+                        <li>Role of professional institutions</li>
+                        <li>BCS structure and membership</li>
+                        <li>Professional codes of conduct</li>
+                        <li>Public Interest Disclosure Act</li>
+                        <li>Practice: BCS scenario questions</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 2</div>
+                    <div class="day-title">Organizations & Structure</div>
+                    <ul class="topic-list">
+                        <li>Company structures & director roles</li>
+                        <li>Management structures</li>
+                        <li>Limited company advantages</li>
+                        <li>Takeovers, mergers, outsourcing</li>
+                        <li>Practice: Structure comparison questions</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 3</div>
+                    <div class="day-title">Finance</div>
+                    <ul class="topic-list">
+                        <li>Balance sheet, P&L, cash flow</li>
+                        <li>Depreciation methods</li>
+                        <li>Financial disclosure requirements</li>
+                        <li>Practice: Financial calculations</li>
+                        <li>Master depreciation formulas</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 4</div>
+                    <div class="day-title">Management Accounting</div>
+                    <ul class="topic-list">
+                        <li>Direct vs indirect costs</li>
+                        <li>Fixed vs variable costs</li>
+                        <li>Overhead allocation</li>
+                        <li>DCF analysis</li>
+                        <li>Practice: Cost calculation problems</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 5</div>
+                    <div class="day-title">Legal Obligations</div>
+                    <ul class="topic-list">
+                        <li>Data Protection Act & GDPR</li>
+                        <li>Computer Misuse Act</li>
+                        <li>Equality Act 2010</li>
+                        <li>Consumer Rights Act</li>
+                        <li>Practice: Legal scenario questions</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 6</div>
+                    <div class="day-title">IP & Online Working</div>
+                    <ul class="topic-list">
+                        <li>Intellectual property concepts</li>
+                        <li>Copyright, patents, trademarks</li>
+                        <li>Internet privacy laws</li>
+                        <li>Cross-border jurisdiction</li>
+                        <li>Practice: IP protection scenarios</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card pisp">
+                    <div class="day-number">Day 7</div>
+                    <div class="day-title">Human Resources</div>
+                    <ul class="topic-list">
+                        <li>Employment statutory framework</li>
+                        <li>TUPE regulations</li>
+                        <li>Recruitment & selection</li>
+                        <li>SFIA framework</li>
+                        <li>Practice: HR management cases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week 2 -->
+        <div class="week">
+            <div class="week-header">
+                <h2>Week 2: SE2 Core Sections (Days 8-14)</h2>
+                <p>Master all SE2 sections with targeted practice</p>
+            </div>
+            <div class="days-grid">
+                <div class="day-card se2">
+                    <div class="day-number">Day 8</div>
+                    <div class="day-title">Process Improvement</div>
+                    <ul class="topic-list">
+                        <li>CMM, CMMI, SPICE frameworks</li>
+                        <li>ISO & IEEE standards</li>
+                        <li>Process maturity models</li>
+                        <li>Practice: Framework comparison</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 9</div>
+                    <div class="day-title">Software Life Cycles</div>
+                    <ul class="topic-list">
+                        <li>Waterfall, V-model, Prototyping</li>
+                        <li>Spiral, Incremental models</li>
+                        <li>Agile & Extreme Programming</li>
+                        <li>Practice: Model selection scenarios</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 10</div>
+                    <div class="day-title">Requirements Engineering</div>
+                    <ul class="topic-list">
+                        <li>Requirements management</li>
+                        <li>Elicitation techniques</li>
+                        <li>Stakeholder analysis</li>
+                        <li>Practice: Elicitation strategies</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 11</div>
+                    <div class="day-title">Management & Evolution</div>
+                    <ul class="topic-list">
+                        <li>Project management methods</li>
+                        <li>Cost estimation techniques</li>
+                        <li>Lehman's Laws</li>
+                        <li>Practice: Management scenarios</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 12</div>
+                    <div class="day-title">Maintenance & Architecture</div>
+                    <ul class="topic-list">
+                        <li>Software maintenance methods</li>
+                        <li>Reverse engineering</li>
+                        <li>Architecture styles & models</li>
+                        <li>Practice: Architecture decisions</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 13</div>
+                    <div class="day-title">Metrics & Reuse</div>
+                    <ul class="topic-list">
+                        <li>Complexity measures</li>
+                        <li>Coupling & cohesion metrics</li>
+                        <li>Component-based engineering</li>
+                        <li>Practice: Metrics calculations</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card se2">
+                    <div class="day-number">Day 14</div>
+                    <div class="day-title">Advanced Topics</div>
+                    <ul class="topic-list">
+                        <li>Software as a Service</li>
+                        <li>Open-source development</li>
+                        <li>UML & Object Constraint Language</li>
+                        <li>Practice: Advanced scenarios</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week 3 -->
+        <div class="week">
+            <div class="week-header">
+                <h2>Week 3: Full Past Papers & Weak Areas (Days 15-21)</h2>
+                <p>Complete exam practice and targeted improvement</p>
+            </div>
+            <div class="days-grid">
+                <div class="day-card practice">
+                    <div class="day-number">Day 15</div>
+                    <div class="day-title">PISP Past Paper #1</div>
+                    <ul class="topic-list">
+                        <li>Full timed PISP exam (2 hours)</li>
+                        <li>Detailed mistake analysis</li>
+                        <li>Identify weak chapters</li>
+                        <li>Evening: Study gaps</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card practice">
+                    <div class="day-number">Day 16</div>
+                    <div class="day-title">SE2 Past Paper #1</div>
+                    <ul class="topic-list">
+                        <li>Full timed SE2 exam (3 hours)</li>
+                        <li>Detailed mistake analysis</li>
+                        <li>Identify weak sections</li>
+                        <li>Evening: Study gaps</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card revision">
+                    <div class="day-number">Day 17</div>
+                    <div class="day-title">PISP Targeted Revision</div>
+                    <ul class="topic-list">
+                        <li>Revisit weakest chapters</li>
+                        <li>Redo related questions</li>
+                        <li>Create improved notes</li>
+                        <li>Focus on calculation methods</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card revision">
+                    <div class="day-number">Day 18</div>
+                    <div class="day-title">SE2 Targeted Revision</div>
+                    <ul class="topic-list">
+                        <li>Revisit weakest sections</li>
+                        <li>Redo related questions</li>
+                        <li>Draw key diagrams</li>
+                        <li>Memorize frameworks</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card practice">
+                    <div class="day-number">Day 19</div>
+                    <div class="day-title">PISP Past Paper #2</div>
+                    <ul class="topic-list">
+                        <li>Different PISP exam (timed)</li>
+                        <li>Compare with Day 15 performance</li>
+                        <li>Note improvements</li>
+                        <li>Fine-tune remaining gaps</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card practice">
+                    <div class="day-number">Day 20</div>
+                    <div class="day-title">SE2 Past Paper #2</div>
+                    <ul class="topic-list">
+                        <li>Different SE2 exam (timed)</li>
+                        <li>Compare with Day 16 performance</li>
+                        <li>Practice question selection</li>
+                        <li>Refine time management</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card practice">
+                    <div class="day-number">Day 21</div>
+                    <div class="day-title">Mock Exam Day</div>
+                    <ul class="topic-list">
+                        <li>Full PISP mock (exam conditions)</li>
+                        <li>Full SE2 mock (exam conditions)</li>
+                        <li>Performance assessment</li>
+                        <li>Final confidence check</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week 4 -->
+        <div class="week">
+            <div class="week-header">
+                <h2>Week 4: Final Preparation (Days 22-25)</h2>
+                <p>Peak readiness and exam confidence</p>
+            </div>
+            <div class="days-grid">
+                <div class="day-card revision">
+                    <div class="day-number">Day 22</div>
+                    <div class="day-title">Speed Revision</div>
+                    <ul class="topic-list">
+                        <li>PISP: 30 mins per chapter</li>
+                        <li>SE2: 45 mins per section</li>
+                        <li>Create final reference cards</li>
+                        <li>Key formulas & frameworks</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card practice">
+                    <div class="day-number">Day 23</div>
+                    <div class="day-title">Final Practice</div>
+                    <ul class="topic-list">
+                        <li>Cherry-picked PISP questions</li>
+                        <li>Cherry-picked SE2 questions</li>
+                        <li>Focus on question types</li>
+                        <li>Review reference materials</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card exam">
+                    <div class="day-number">Day 24</div>
+                    <div class="day-title">Pre-Exam Day</div>
+                    <ul class="topic-list">
+                        <li>Light formula review</li>
+                        <li>Organize exam materials</li>
+                        <li>Rest and relaxation</li>
+                        <li>Early night</li>
+                    </ul>
+                </div>
+                
+                <div class="day-card exam">
+                    <div class="day-number">Day 25</div>
+                    <div class="day-title">Exam Day</div>
+                    <ul class="topic-list">
+                        <li>Brief key points review</li>
+                        <li>Stay calm and confident</li>
+                        <li>Trust your preparation</li>
+                        <li>Success! 🎉</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h3>🎯 Success Tips</h3>
+            <ul>
+                <li><strong>Chapter Mastery:</strong> Don't move to next chapter until you can explain current one clearly</li>
+                <li><strong>Past Paper Strategy:</strong> Look for question patterns and marking scheme requirements</li>
+                <li><strong>Time Management:</strong> PISP = 30 mins per question, SE2 = 60 mins per question</li>
+                <li><strong>Daily Review:</strong> Create summary notes after each chapter</li>
+                <li><strong>Weak Areas:</strong> Spend extra time on chapters where past paper performance is poor</li>
+                <li><strong>Reference Materials:</strong> Build quick reference cards for formulas, frameworks, and legal acts</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
